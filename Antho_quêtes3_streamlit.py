@@ -5,7 +5,6 @@ import streamlit_authenticator as stauth
 # -------------------------------------------------------
 # CREDENTIALS AVEC MOTS DE PASSE HASHÉS (fonctionnels)
 # -------------------------------------------------------
-# mots de passe : "utilisateurMDP" et "éponge"
 credentials = {
     "usernames": {
         "utilisateur": {
@@ -34,21 +33,21 @@ authenticator = stauth.Authenticate(
 )
 
 # -------------------------------------------------------
-# LOGIN
+# LOGIN (affiché dans le flux principal)
 # -------------------------------------------------------
-login_info = authenticator.login("Connexion", location="sidebar")  # <- correction ici
+name, authentication_status, username = authenticator.login("Connexion", location="main")
 
 # -------------------------------------------------------
 # LOGOUT
 # -------------------------------------------------------
-if login_info["authentication_status"]:
-    st.sidebar.write(f"Bienvenue {login_info['name']} !")
+if authentication_status:
+    st.sidebar.write(f"Bienvenue {name} !")
     authenticator.logout("Déconnexion", "sidebar")
 
 # -------------------------------------------------------
 # CONTENU PRINCIPAL
 # -------------------------------------------------------
-if login_info["authentication_status"]:
+if authentication_status:
 
     # Menu sidebar
     with st.sidebar:
@@ -63,7 +62,7 @@ if login_info["authentication_status"]:
     if selection == "Accueil":
         st.title("Page d'accueil")
         st.write("Bienvenue sur ma page Streamlit !")
-        st.image("Bienvenue.jpg")  # vérifier le chemin de l'image
+        st.image("Bienvenue.jpg")  # Assurez-vous que l'image est dans le même dossier
 
     # ------------------------
     # Album du chat
@@ -81,8 +80,8 @@ if login_info["authentication_status"]:
 # -------------------------------------------------------
 # MESSAGES D'ERREUR / ATTENTE
 # -------------------------------------------------------
-elif login_info["authentication_status"] is False:
+elif authentication_status is False:
     st.error("Nom d'utilisateur ou mot de passe incorrect")
 
-elif login_info["authentication_status"] is None:
+elif authentication_status is None:
     st.warning("Veuillez entrer vos identifiants pour vous connecter")
