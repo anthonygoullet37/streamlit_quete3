@@ -33,10 +33,9 @@ authenticator = stauth.Authenticate(
 )
 
 # --- Login ---
-# Note : on ne passe pas 'name=', juste le label en premier argument
 name, authentication_status, username = authenticator.login(
-    "Connexion",  # label du formulaire
-    "sidebar"     # emplacement
+    "Connexion",           # label
+    location="sidebar"     # bien en argument nommé
 )
 
 # --- Logout ---
