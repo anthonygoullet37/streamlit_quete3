@@ -5,7 +5,7 @@ import streamlit_authenticator as stauth
 from streamlit_option_menu import option_menu
 
 
-lesDonneesDesComptes = {
+credentials = {
     'usernames': {
         'utilisateur': {
             'name': 'utilisateur',
@@ -27,11 +27,13 @@ lesDonneesDesComptes = {
 }
 
 authenticator = stauth.Authenticate(
-    credentials,         # ton dictionnaire de comptes
+    credentials,
     "cookie_name",       # nom du cookie
     "signature_key",     # clé secrète
     cookie_expiry_days=1
 )
+
+authenticator.logout("Déconnexion", "sidebar")
 
 
  # --- Login box ---
@@ -71,12 +73,14 @@ elif selection == "🐱Les photos de mon chat":
         st.image("Cat3.jpg")
 
 
-if st.session_state["authentication_status"]:
-   # Le bouton de déconnexion
-  authenticator.logout("Déconnexion")
+name, authentication_status, username = authenticator.login("Connexion", "Menu")
 
-elif st.session_state["authentication_status"] is False:
-    st.error("L'username ou le password est/sont incorrect")
-elif st.session_state["authentication_status"] is None:
-    st.warning('Les champs username et mot de passe doivent être remplie')
+if authentication_status:
+    st.write("Bienvenue !")
+
+elif authentication_status is False:
+    st.error("C'est pas bon, recommence")
+elif authentication_status is None:
+    st.warning("Identifiants à renseigner")
+
 
