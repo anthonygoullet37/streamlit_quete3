@@ -1,10 +1,9 @@
 import streamlit as st
 import pandas as pd
-from streamlit_authenticator import Authenticate
+
+import streamlit_authenticator as stauth
 from streamlit_option_menu import option_menu
 
-
-import streamlit as st
 
 lesDonneesDesComptes = {
     'usernames': {
@@ -27,12 +26,13 @@ lesDonneesDesComptes = {
     }
 }
 
-authenticator = Authenticate(
-    lesDonneesDesComptes,
-    "cookie name",
-    "cookie key",
-    30,
+authenticator = stauth.Authenticate(
+    credentials,         # ton dictionnaire de comptes
+    "cookie_name",       # nom du cookie
+    "signature_key",     # clé secrète
+    cookie_expiry_days=1
 )
+
 
  # --- Login box ---
 authenticator.login()
