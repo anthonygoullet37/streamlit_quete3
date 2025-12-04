@@ -2,49 +2,56 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import streamlit_authenticator as stauth
 
-# --- Hasher les mots de passe ---
-passwords = ["utilisateurMDP", "éponge"]
-hashed_passwords = stauth.Hasher(passwords).generate()
-
-# --- Données utilisateurs ---
+# -------------------------------------------------------
+# CREDENTIALS AVEC MOTS DE PASSE HASHÉS (fonctionnels)
+# -------------------------------------------------------
 credentials = {
     "usernames": {
         "utilisateur": {
             "name": "utilisateur",
-            "password": hashed_passwords[0],
+            "password": "$2b$12$RiqZK8/tAaZyKsRLj8g9Uu4l4.hbppo4dYVzxNdGlyhAHwpmACqJq",  # utilisateurMDP
             "email": "utilisateur@gmail.com",
             "role": "utilisateur"
         },
         "Bob": {
             "name": "Bob",
-            "password": hashed_passwords[1],
+            "password": "$2b$12$zJIXogq5nyS.HSi3Ta8DKevxUtUC312t3vB3YofC/a73t1uTUCWvm",  # éponge
             "email": "admin@gmail.com",
             "role": "administrateur"
         }
     }
 }
 
-# --- Authentification ---
+# -------------------------------------------------------
+# AUTHENTIFICATION
+# -------------------------------------------------------
 authenticator = stauth.Authenticate(
     credentials,
-    "cookie_name",      # Nom du cookie
-    "signature_key",    # Clé secrète pour signer le cookie
+    cookie_name="cookie_name",
+    key="signature_key",
     cookie_expiry_days=1
 )
 
-# --- Login ---
+# -------------------------------------------------------
+# LOGIN
+# -------------------------------------------------------
 name, authentication_status, username = authenticator.login(
     "Connexion",
     location="sidebar"
 )
 
-# --- Logout ---
+# -------------------------------------------------------
+# LOGOUT
+# -------------------------------------------------------
 if authentication_status:
     authenticator.logout("Déconnexion", "sidebar")
     st.sidebar.write(f"Bienvenue {name} !")
 
-# --- Contenu principal ---
+# -------------------------------------------------------
+# CONTENU DE L'APPLICATION
+# -------------------------------------------------------
 if authentication_status:
+
     # Menu sidebar
     with st.sidebar:
         selection = option_menu(
@@ -52,11 +59,17 @@ if authentication_status:
             options=["Accueil", "🐱 Les photos de mon chat"]
         )
 
+    # ------------------------
+    # Page d'accueil
+    # ------------------------
     if selection == "Accueil":
         st.title("Page d'accueil")
         st.write("Bienvenue sur ma page Streamlit !")
         st.image("Bienvenue.jpg")
 
+    # ------------------------
+    # Album du chat
+    # ------------------------
     elif selection == "🐱 Les photos de mon chat":
         st.title("Album de mon chat")
         col1, col2, col3 = st.columns(3)
@@ -67,7 +80,11 @@ if authentication_status:
         with col3:
             st.image("Cat3.jpg")
 
+# -------------------------------------------------------
+# MESSAGES D'ERREUR / ATTENTE
+# -------------------------------------------------------
 elif authentication_status is False:
     st.error("Nom d'utilisateur ou mot de passe incorrect")
+
 elif authentication_status is None:
     st.warning("Veuillez entrer vos identifiants pour vous connecter")
