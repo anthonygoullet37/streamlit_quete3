@@ -2,23 +2,23 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import streamlit_authenticator as stauth
 
+# --- Hasher les mots de passe ---
+passwords = ["utilisateurMDP", "éponge"]
+hashed_passwords = stauth.Hasher(passwords).generate()
+
 # --- Données utilisateurs ---
 credentials = {
     "usernames": {
         "utilisateur": {
             "name": "utilisateur",
-            "password": "utilisateurMDP",
+            "password": hashed_passwords[0],
             "email": "utilisateur@gmail.com",
-            "failed_login_attempts": 0,
-            "logged_in": False,
             "role": "utilisateur"
         },
         "Bob": {
             "name": "Bob",
-            "password": "éponge",
+            "password": hashed_passwords[1],
             "email": "admin@gmail.com",
-            "failed_login_attempts": 0,
-            "logged_in": False,
             "role": "administrateur"
         }
     }
@@ -27,15 +27,15 @@ credentials = {
 # --- Authentification ---
 authenticator = stauth.Authenticate(
     credentials,
-    "cookie_name",
-    "signature_key",
+    "cookie_name",      # Nom du cookie
+    "signature_key",    # Clé secrète pour signer le cookie
     cookie_expiry_days=1
 )
 
 # --- Login ---
 name, authentication_status, username = authenticator.login(
-    "Connexion",           # label
-    location="sidebar"     # bien en argument nommé
+    "Connexion",
+    location="sidebar"
 )
 
 # --- Logout ---
