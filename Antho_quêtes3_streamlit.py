@@ -35,7 +35,7 @@ authenticator = stauth.Authenticate(
 )
 
 # --- Login ---
-name, authentication_status, username = authenticator.login("Connexion", "Menu")  
+name, authentication_status, username = authenticator.login("Connexion", "main")  
 
 if authentication_status: 
 
