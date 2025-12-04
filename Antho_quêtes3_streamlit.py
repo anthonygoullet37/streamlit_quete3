@@ -36,7 +36,7 @@ authenticator = stauth.Authenticate(
 # -------------------------------------------------------
 # LOGIN
 # -------------------------------------------------------
-login_info = authenticator.login("Connexion", "sidebar")
+login_info = authenticator.login("Connexion", location="sidebar")  # <- correction ici
 
 # -------------------------------------------------------
 # LOGOUT
