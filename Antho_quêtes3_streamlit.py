@@ -38,6 +38,7 @@ authenticator.login()
 
    # Menu sidebar
 with st.sidebar:
+    st.button("Déconnexion")
     selection = option_menu(
         menu_title=None,
         options=["Accueil", "🐱 Les photos de mon chat"]
