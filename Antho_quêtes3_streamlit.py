@@ -13,8 +13,8 @@ lesDonneesDesComptes = {
             'role': 'utilisateur'
         },
         'Bob': {
-            'name': 'Bob',
-            'password': 'éponge',
+            'name': 'Stranger',
+            'password': 'things',
             'email': 'admin@gmail.com',
             'failed_login_attemps': 0,  # Sera géré automatiquement
             'logged_in': False,          # Sera géré automatiquement
@@ -65,7 +65,7 @@ elif selection == "🐱 Les photos de mon chat":
             st.image("Cat3.jpg")
 
 elif st.session_state["authentication_status"] is False:
-    st.error("L'username ou le password est incorrect")
+    st.error("C'est pas bon recommence")
 
 elif st.session_state["authentication_status"] is None:
     st.warning("Les champs username et mot de passe doivent être remplis")
