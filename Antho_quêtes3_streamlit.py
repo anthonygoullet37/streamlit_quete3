@@ -1,9 +1,8 @@
 import streamlit as st
-import pandas as pd
 from streamlit_option_menu import option_menu
 import streamlit_authenticator as stauth
 
-
+# --- Données utilisateurs ---
 credentials = {
     "usernames": {
         "utilisateur": {
@@ -28,29 +27,31 @@ credentials = {
 # --- Authentification ---
 authenticator = stauth.Authenticate(
     credentials,
-    "cookie_name",      
-    "signature_key",   
+    "cookie_name",
+    "signature_key",
     cookie_expiry_days=1
 )
 
 # --- Login ---
+# Note : on ne passe pas 'name=', juste le label en premier argument
 name, authentication_status, username = authenticator.login(
-    name="Connexion", 
-    location="sidebar"
+    "Connexion",  # label du formulaire
+    "sidebar"     # emplacement
 )
 
 # --- Logout ---
 if authentication_status:
     authenticator.logout("Déconnexion", "sidebar")
-    st.sidebar.write("Bienvenue!")
+    st.sidebar.write(f"Bienvenue {name} !")
 
-# --- Contenu de l'application après login ---
+# --- Contenu principal ---
 if authentication_status:
     # Menu sidebar
     with st.sidebar:
         selection = option_menu(
             menu_title=None,
-            options=["Accueil", "🐱 Les photos de mon chat"],)
+            options=["Accueil", "🐱 Les photos de mon chat"]
+        )
 
     if selection == "Accueil":
         st.title("Page d'accueil")
@@ -59,7 +60,6 @@ if authentication_status:
 
     elif selection == "🐱 Les photos de mon chat":
         st.title("Album de mon chat")
-        # Création de 3 colonnes pour les images
         col1, col2, col3 = st.columns(3)
         with col1:
             st.image("Cat1.jpg")
@@ -69,6 +69,6 @@ if authentication_status:
             st.image("Cat3.jpg")
 
 elif authentication_status is False:
-    st.error("NC'est pas bon recommence")
+    st.error("Nom d'utilisateur ou mot de passe incorrect")
 elif authentication_status is None:
-    st.warning("Entrer les identifiants")
+    st.warning("Veuillez entrer vos identifiants pour vous connecter")
