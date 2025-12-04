@@ -12,7 +12,7 @@ lesDonneesDesComptes = {
             'logged_in': False,          # Sera géré automatiquement
             'role': 'utilisateur'
         },
-        'Bob': {
+        'Stranger': {
             'name': 'Stranger',
             'password': 'things',
             'email': 'admin@gmail.com',
